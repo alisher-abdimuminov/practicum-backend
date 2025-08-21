@@ -81,6 +81,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
             {
                 "fields": (
                     "groups",
+                    "is_staff",
                     "full_name",
                     "phone",
                     "group",
