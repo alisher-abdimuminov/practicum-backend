@@ -56,11 +56,11 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
     model = User
     fieldsets = (
         ("Ma'lumotlar", {
-            "fields": ("full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
+            "fields": ("groups", "full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
         }), 
     )
     add_fieldsets = (
          ("Yangi foydalanuvchi qo'shish", {
-            "fields": ("username", "password1", "password2", "full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
+            "fields": ("groups", "username", "password1", "password2", "full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
         }),
     )
