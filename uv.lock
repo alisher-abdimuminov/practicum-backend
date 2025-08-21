@@ -51,6 +51,7 @@ dependencies = [
     { name = "django-cors-headers" },
     { name = "django-unfold" },
     { name = "djangorestframework" },
+    { name = "gunicorn" },
     { name = "python-decouple" },
     { name = "tf-keras" },
 ]
@@ -62,6 +63,7 @@ requires-dist = [
     { name = "django-cors-headers", specifier = ">=4.7.0" },
     { name = "django-unfold", specifier = ">=0.64.2" },
     { name = "djangorestframework", specifier = ">=3.16.1" },
+    { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "python-decouple", specifier = ">=3.8" },
     { name = "tf-keras", specifier = ">=2.19.0" },
 ]
