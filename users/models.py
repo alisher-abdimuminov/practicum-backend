@@ -10,7 +10,7 @@ class User(AbstractUser):
 
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=100, null=True, blank=True)
-    group = models.JSONField(default=list)
+    group = models.CharField(max_length=100, null=True, blank=True)
     passport_number = models.CharField(max_length=100, null=True, blank=True)
     birth_date = models.CharField(max_length=100, null=True, blank=True)
     course = models.CharField(max_length=100, null=True, blank=True)
