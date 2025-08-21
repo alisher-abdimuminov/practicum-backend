@@ -1,0 +1,17 @@
+[Unit]
+Description=practicum daemon
+Requires=practicum.socket
+After=network.target
+
+[Service]
+User=sammy
+Group=www-data
+WorkingDirectory=/home/ali/practicum/backend
+ExecStart=/home/ali/practicum/backend/.venv/bin/gunicorn \
+          --access-logfile - \
+          --workers 3 \
+          --bind unix:/run/practicum.sock \
+          config.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
