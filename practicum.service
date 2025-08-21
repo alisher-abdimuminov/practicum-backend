@@ -4,8 +4,8 @@ Requires=practicum.socket
 After=network.target
 
 [Service]
-User=sammy
-Group=www-data
+User=root
+Group=root
 WorkingDirectory=/home/ali/practicum/backend
 ExecStart=/home/ali/practicum/backend/.venv/bin/gunicorn \
           --access-logfile - \
