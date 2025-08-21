@@ -15,6 +15,7 @@ from .models import (
 
 admin.site.unregister(Group)
 
+
 @admin.register(Group)
 class GroupModelAdmin(ModelAdmin):
     list_display = ["name"]
@@ -22,7 +23,7 @@ class GroupModelAdmin(ModelAdmin):
 
 @admin.register(Area)
 class AreaModelAdmin(ModelAdmin):
-    list_display = ["name", "coord1", "coord2", "coord3", "coord4" ]
+    list_display = ["name", "coord1", "coord2", "coord3", "coord4"]
     search_fields = ["name"]
 
 
@@ -36,31 +37,85 @@ class AttendanceModelAdmin(ModelAdmin):
 @admin.register(Submit)
 class SubmitModelAdmin(ModelAdmin):
     list_display = ["task", "student", "status", "point", "created"]
-    list_filter = ["student", "status", "created", ]
+    list_filter = [
+        "student",
+        "status",
+        "created",
+    ]
 
 
 @admin.register(Task)
 class TaskModelAdmin(ModelAdmin):
-    list_display = ["name", "teacher", "created", ]
-    list_filter = ["teacher", "created", ]
-
+    list_display = [
+        "name",
+        "teacher",
+        "created",
+    ]
+    list_filter = [
+        "teacher",
+        "created",
+    ]
 
 
 @admin.register(User)
 class UserModelAdmin(UserAdmin, ModelAdmin):
     add_form = UserCreationForm
     form = UserChangeForm
-    list_display = ["username", "full_name", "email", "phone", ]
-    search_fields = ["username", "full_name", "email", "phone", ]
+    list_display = [
+        "username",
+        "full_name",
+        "email",
+        "phone",
+    ]
+    search_fields = [
+        "username",
+        "full_name",
+        "email",
+        "phone",
+    ]
     list_filter = ["group", "course"]
     model = User
     fieldsets = (
-        ("Ma'lumotlar", {
-            "fields": ("groups", "full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
-        }), 
+        (
+            "Ma'lumotlar",
+            {
+                "fields": (
+                    "groups",
+                    "full_name",
+                    "phone",
+                    "group",
+                    "passport_number",
+                    "birth_date",
+                    "course",
+                    "faculty",
+                    "payment_method",
+                    "gpa",
+                    "image",
+                )
+            },
+        ),
     )
     add_fieldsets = (
-         ("Yangi foydalanuvchi qo'shish", {
-            "fields": ("groups", "username", "password1", "password2", "full_name", "phone", "group", "passport_number", "birth_date", "course",  "faculty", "payment_method", "gpa", "image", )
-        }),
+        (
+            "Yangi foydalanuvchi qo'shish",
+            {
+                "fields": (
+                    "groups",
+                    "is_staff",
+                    "username",
+                    "password1",
+                    "password2",
+                    "full_name",
+                    "phone",
+                    "group",
+                    "passport_number",
+                    "birth_date",
+                    "course",
+                    "faculty",
+                    "payment_method",
+                    "gpa",
+                    "image",
+                )
+            },
+        ),
     )
