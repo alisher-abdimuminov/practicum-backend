@@ -124,6 +124,7 @@ def callback(request: HttpRequest):
         client = hemis_student_client
 
     access_token_response = client.get_access_token(code)
+    print(access_token_response)
 
     if "access_token" in access_token_response:
         access_token = access_token_response.get("access_token")
