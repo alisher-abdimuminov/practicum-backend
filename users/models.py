@@ -5,22 +5,58 @@ from django.contrib.auth.models import AbstractUser
 from .manager import UserManager
 
 
+ROLE = (
+    ("admin", "Admin"),
+    ("marketing", "Marketing"),
+    ("teacher", "Teacher"),
+    ("student", "Student"),
+)
+
+SUBMIT_STATUS = (
+    ("uploaded", "Yuklangan"),
+    ("marked", "Baholangan"),
+    ("rejected", "Qaytarilgan"),
+)
+
+ATTENDANCE_STATUS = (
+    ("arrived", "Kelgan"),
+    ("late", "Kech qolgan"),
+    ("failed", "Xatolik"),
+)
+
+WEEK_DAY = (
+    ("monday", "Dushanba"),
+    ("tuesday", "Seshanba"),
+    ("wednesday", "Chorshanba"),
+    ("thursday", "Payshanba"),
+    ("friday", "Juma"),
+    ("saturday", "Shanba"),
+    ("sunday", "Yakshanba"),
+)
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.name
+
+
 class User(AbstractUser):
     uuid = models.UUIDField(default=uuid4, editable=False)
 
     full_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=100, null=True, blank=True)
-    group = models.CharField(max_length=100, null=True, blank=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
     passport_number = models.CharField(max_length=100, null=True, blank=True)
     birth_date = models.CharField(max_length=100, null=True, blank=True)
-    course = models.CharField(max_length=100, null=True, blank=True)
+    level = models.CharField(max_length=100, null=True, blank=True)
     faculty = models.CharField(max_length=100, null=True, blank=True)
     payment_method = models.CharField(max_length=100, null=True, blank=True)
     gpa = models.FloatField(default=0)
 
-    image = models.ImageField(
-        upload_to="images/users", verbose_name="Rasm", null=True, blank=True
-    )
+    image = models.CharField(max_length=1000, null=True, blank=True)
+    role = models.CharField(max_length=100, choices=ROLE, default="student")
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -56,6 +92,7 @@ class Area(models.Model):
 
 class Task(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
     name = models.CharField(max_length=100, verbose_name="Nomi")
     teacher = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="O'qituvchi")
     description = models.TextField(null=True, blank=True, verbose_name="Tavsifi")
@@ -75,7 +112,7 @@ class Submit(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False)
     task = models.ForeignKey(Task, on_delete=models.CASCADE, verbose_name="Topshiriq")
     student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Talaba")
-    status = models.CharField(max_length=100, verbose_name="Holati")
+    status = models.CharField(max_length=100, choices=SUBMIT_STATUS, verbose_name="Holati")
     point = models.IntegerField(default=5, verbose_name="Ball")
     file = models.FileField(upload_to="files/submits", verbose_name="Fayl")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Yuklangan vaqti")
@@ -93,7 +130,7 @@ class Attendance(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False)
     student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Talaba")
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="Joylashuv")
-    status = models.CharField(max_length=100, verbose_name="Holati")
+    status = models.CharField(max_length=100, choices=ATTENDANCE_STATUS, verbose_name="Holati")
     image = models.ImageField(upload_to="images/attendances", verbose_name="Rasm")
 
     created = models.DateTimeField(auto_now_add=True, verbose_name="O'tgan vaqti")
@@ -106,3 +143,11 @@ class Attendance(models.Model):
         verbose_name = "Davomat"
         verbose_name_plural = "Davomat"
 
+
+class Schedule(models.Model):
+    groups = models.ManyToManyField(Group, related_name="schedule_groups")
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    weekday = models.CharField(max_length=100, choices=WEEK_DAY)
+
+    def __str__(self):
+        return self.weekday

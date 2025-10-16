@@ -53,6 +53,7 @@ dependencies = [
     { name = "djangorestframework" },
     { name = "gunicorn" },
     { name = "python-decouple" },
+    { name = "requests" },
     { name = "tf-keras" },
 ]
 
@@ -65,6 +66,7 @@ requires-dist = [
     { name = "djangorestframework", specifier = ">=3.16.1" },
     { name = "gunicorn", specifier = ">=23.0.0" },
     { name = "python-decouple", specifier = ">=3.8" },
+    { name = "requests", specifier = ">=2.32.4" },
     { name = "tf-keras", specifier = ">=2.19.0" },
 ]
 

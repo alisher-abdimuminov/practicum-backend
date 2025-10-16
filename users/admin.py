@@ -1,8 +1,8 @@
 from django.contrib import admin
 from unfold.admin import ModelAdmin
+from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from django.contrib.auth.models import Group
 
 from .models import (
     Area,
@@ -10,6 +10,8 @@ from .models import (
     Attendance,
     Submit,
     Task,
+    Group as GGroup,
+    Schedule,
 )
 
 
@@ -73,7 +75,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
         "email",
         "phone",
     ]
-    list_filter = ["group", "course"]
+    list_filter = ["group", "level"]
     model = User
     fieldsets = (
         (
@@ -92,6 +94,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
                     "payment_method",
                     "gpa",
                     "image",
+                    "role",
                 )
             },
         ),
@@ -116,7 +119,18 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
                     "payment_method",
                     "gpa",
                     "image",
+                    "role",
                 )
             },
         ),
     )
+
+
+@admin.register(GGroup)
+class GGroupModelAdmin(ModelAdmin):
+    list_display = ["name"]
+
+
+@admin.register(Schedule)
+class ScheduleModelAdmin(ModelAdmin):
+    list_display = ["area", "weekday"]
