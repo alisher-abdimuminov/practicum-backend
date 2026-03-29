@@ -14,96 +14,97 @@ ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
-    'unfold',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
+    # unfold
+    "unfold",
+    "unfold.contrib.filters",
+    # django
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # extra
-    'rest_framework',
-    'rest_framework.authtoken',
-    'corsheaders',
-
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
     # local apps
-    'users',
+    "users",
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
 
-AUTH_PASSWORD_VALIDATORS = [
-   
-]
+AUTH_PASSWORD_VALIDATORS = []
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 LOGIN_URL = "/hemis/"
 
 # static files
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 STATIC_ROOT = "static"
 
 # media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 # user model
 AUTH_USER_MODEL = "users.User"
 
 # rest framework
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework.authentication.TokenAuthentication", ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
 
 # csrf
@@ -122,10 +123,9 @@ UNFOLD = {
     "SITE_SUBHEADER": "Admin Panel",
     "SITE_ICON": {
         "light": lambda request: "https://uzfi.uz/static/assets/images/uzfi.png",
-        "dark": lambda request: "https://uzfi.uz/static/assets/images/uzfi.png"
+        "dark": lambda request: "https://uzfi.uz/static/assets/images/uzfi.png",
     },
     "SHOW_HISTORY": True,
-
     "SIDEBAR": {
         "show_search": True,
         "navigation": [
@@ -137,47 +137,46 @@ UNFOLD = {
                     {
                         "title": "Talabalar",
                         "icon": "group",
-                        "link": reverse_lazy("admin:users_user_changelist")
+                        "link": reverse_lazy("admin:users_user_changelist"),
                     },
                     {
                         "title": "Guruhlar",
                         "icon": "group",
-                        "link": reverse_lazy("admin:users_group_changelist")
+                        "link": reverse_lazy("admin:users_group_changelist"),
                     },
                     {
                         "title": "Dars jadvali",
                         "icon": "group",
-                        "link": reverse_lazy("admin:users_schedule_changelist")
+                        "link": reverse_lazy("admin:users_schedule_changelist"),
                     },
                     {
                         "title": "Joylashuvlar",
                         "icon": "location_on",
-                        "link": reverse_lazy("admin:users_area_changelist")
+                        "link": reverse_lazy("admin:users_area_changelist"),
                     },
                     {
                         "title": "Topshiriqlar",
                         "icon": "add_task",
-                        "link": reverse_lazy("admin:users_task_changelist")
+                        "link": reverse_lazy("admin:users_task_changelist"),
                     },
                     {
                         "title": "Yuklamalar",
                         "icon": "file_present",
-                        "link": reverse_lazy("admin:users_submit_changelist")
+                        "link": reverse_lazy("admin:users_submit_changelist"),
                     },
                     {
                         "title": "Davomat",
                         "icon": "more_time",
-                        "link": reverse_lazy("admin:users_attendance_changelist")
+                        "link": reverse_lazy("admin:users_attendance_changelist"),
                     },
                     {
                         "title": "Guruhlar",
                         "icon": "shield",
                         "link": reverse_lazy("admin:auth_group_changelist"),
-                        "permission": lambda request: request.user.is_superuser
-                    }
-                ]
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                ],
             }
-        ]
-    }
+        ],
+    },
 }
-

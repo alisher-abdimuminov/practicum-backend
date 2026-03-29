@@ -3,6 +3,9 @@ from unfold.admin import ModelAdmin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from unfold.contrib.filters.admin import (
+    AutocompleteSelectFilter,
+)
 
 from .models import (
     Area,
@@ -21,6 +24,7 @@ admin.site.unregister(Group)
 @admin.register(Group)
 class GroupModelAdmin(ModelAdmin):
     list_display = ["name"]
+    search_fields = ["name"]
 
 
 @admin.register(Area)
@@ -39,24 +43,42 @@ class AttendanceModelAdmin(ModelAdmin):
 @admin.register(Submit)
 class SubmitModelAdmin(ModelAdmin):
     list_display = ["task", "student", "status", "point", "created"]
-    list_filter = [
-        "student",
+    list_filter = (
+        ["student", AutocompleteSelectFilter],
         "status",
         "created",
-    ]
+    )
+    list_filter_submit = True
+    search_fields = ["name"]
 
 
 @admin.register(Task)
 class TaskModelAdmin(ModelAdmin):
-    list_display = [
+    list_display = (
         "name",
         "teacher",
         "created",
-    ]
-    list_filter = [
-        "teacher",
+    )
+    list_filter = (
+        ["teacher", AutocompleteSelectFilter],
         "created",
-    ]
+    )
+    list_filter_submit = True
+    search_fields = ["name"]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "group":
+            if not request.user.is_superuser:
+                kwargs["queryset"] = GGroup.objects.filter(teacher=request.user)
+            else:
+                kwargs["queryset"] = GGroup.objects.all()
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.pk and not request.user.is_superuser:
+            obj.teacher = request.user
+        super().save_model(request, obj, form, change)
 
 
 @admin.register(User)
@@ -76,7 +98,12 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
         "email",
         "phone",
     ]
-    list_filter = ["group", "level", "role"]
+    list_filter = (
+        ["group", AutocompleteSelectFilter],
+        "level",
+        "role",
+    )
+    list_filter_submit = True
     model = User
     fieldsets = (
         (
@@ -130,8 +157,11 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
 @admin.register(GGroup)
 class GGroupModelAdmin(ModelAdmin):
     list_display = ["name"]
+    search_fields = ["name"]
 
 
 @admin.register(Schedule)
 class ScheduleModelAdmin(ModelAdmin):
     list_display = ["area", "weekday"]
+    search_fields = ["name"]
+    filter_horizontal = ("groups",)
