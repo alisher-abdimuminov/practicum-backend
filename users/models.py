@@ -8,8 +8,8 @@ from .manager import UserManager
 ROLE = (
     ("admin", "Admin"),
     ("marketing", "Marketing"),
-    ("teacher", "Teacher"),
-    ("student", "Student"),
+    ("teacher", "O'qituvchi"),
+    ("student", "Talaba"),
 )
 
 SUBMIT_STATUS = (
