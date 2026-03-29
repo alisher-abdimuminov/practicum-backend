@@ -169,6 +169,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
 class GGroupModelAdmin(ModelAdmin):
     list_display = ["name"]
     search_fields = ["name"]
+    autocomplete_fields = ("teacher",)
 
 
 @admin.register(Schedule)
