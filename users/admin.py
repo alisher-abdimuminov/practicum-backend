@@ -68,6 +68,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
         "full_name",
         "email",
         "phone",
+        "role",
     ]
     search_fields = [
         "username",
@@ -75,7 +76,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
         "email",
         "phone",
     ]
-    list_filter = ["group", "level"]
+    list_filter = ["group", "level", "role"]
     model = User
     fieldsets = (
         (

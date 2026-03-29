@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 
 from ..client import HemisClient
 from ..models import User, Group
-from ..serializers import UserSerializer, TeacherSerializer, StudentSerializer
+from ..serializers import UserSerializer
 
 
 CLIENT_ID = config("CLIENT_ID")
@@ -29,7 +29,7 @@ hemis_student_client = HemisClient(
     redirect_uri=REDIRECT_URI,
     authorize_url=STUDENT_AUTHORIZE_URL,
     access_token_url=STUDENT_ACCESS_TOKEN_URL,
-    resource_owner_url=STUDENT_RESOURCE_OWNER_URL
+    resource_owner_url=STUDENT_RESOURCE_OWNER_URL,
 )
 
 hemis_teacher_client = HemisClient(
@@ -38,7 +38,7 @@ hemis_teacher_client = HemisClient(
     redirect_uri=REDIRECT_URI,
     authorize_url=TEACHER_AUTHORIZE_URL,
     access_token_url=TEACHER_ACCESS_TOKEN_URL,
-    resource_owner_url=TEACHER_RESOURCE_OWNER_URL
+    resource_owner_url=TEACHER_RESOURCE_OWNER_URL,
 )
 
 
@@ -82,33 +82,33 @@ def login(request: HttpRequest):
                 "data": "Kalit so'z mos kelmadi",
             }
         )
-    
+
     token = Token.objects.get_or_create(user=user)
 
-    return Response({
-        "status": "success",
-        "code": "200",
-        "data": {
-            **UserSerializer(user).data,
-            "token": token[0].key
+    return Response(
+        {
+            "status": "success",
+            "code": "200",
+            "data": {**UserSerializer(user).data, "token": token[0].key},
         }
-    })
+    )
 
 
 @decorators.api_view(http_method_names=["GET"])
-@decorators.authentication_classes(authentication_classes=[authentication.TokenAuthentication])
+@decorators.authentication_classes(
+    authentication_classes=[authentication.TokenAuthentication]
+)
 @decorators.permission_classes(permission_classes=[permissions.IsAuthenticated])
 def profile(request: HttpRequest):
     user = request.user
     token = Token.objects.get_or_create(user=user)
-    return Response({
-        "status": "success",
-        "code": "200",
-        "data": {
-            **UserSerializer(user).data,
-            "token": token[0].key
+    return Response(
+        {
+            "status": "success",
+            "code": "200",
+            "data": {**UserSerializer(user).data, "token": token[0].key},
         }
-    })
+    )
 
 
 @decorators.api_view(http_method_names=["POST"])
@@ -116,7 +116,6 @@ def callback(request: HttpRequest):
     code = request.data.get("code")
     type = request.data.get("type")
     client = None
-
 
     if type == "teacher":
         client = hemis_teacher_client
@@ -150,14 +149,16 @@ def callback(request: HttpRequest):
 
                     token = Token.objects.get_or_create(user=teacher)
 
-                    return Response({
-                        "status": "success",
-                        "code": "200",
-                        "data": {
-                            **UserSerializer(teacher).data,
-                            "token": token[0].key
+                    return Response(
+                        {
+                            "status": "success",
+                            "code": "200",
+                            "data": {
+                                **UserSerializer(teacher).data,
+                                "token": token[0].key,
+                            },
                         }
-                    })
+                    )
                 else:
                     teacher = User.objects.create(
                         username=username,
@@ -166,25 +167,29 @@ def callback(request: HttpRequest):
                         birth_date=user_details.get("birth_date"),
                         phone=user_details.get("phone"),
                         passport_number=user_details.get("passport_number"),
-                        role="teacher"
+                        role="teacher",
                     )
 
                     token = Token.objects.get_or_create(user=teacher)
 
-                    return Response({
-                        "status": "success",
-                        "code": "200",
-                        "data": {
-                            **UserSerializer(teacher).data,
-                            "token": token[0].key
+                    return Response(
+                        {
+                            "status": "success",
+                            "code": "200",
+                            "data": {
+                                **UserSerializer(teacher).data,
+                                "token": token[0].key,
+                            },
                         }
-                    })
+                    )
             else:
                 username = user_details.get("student_id_number")
 
                 student = User.objects.filter(username=username)
 
-                group = Group.objects.filter(name=user_details.get("data", {}).get("group").get("name"))
+                group = Group.objects.filter(
+                    name=user_details.get("data", {}).get("group").get("name")
+                )
                 if not group:
                     group = Group.objects.create(
                         name=user_details.get("data", {}).get("group").get("name")
@@ -201,22 +206,30 @@ def callback(request: HttpRequest):
                     student.image = user_details.get("picture_full")
                     student.birth_date = user_details.get("birth_date")
                     student.group = group
-                    student.level = user_details.get("data", {}).get("level", {}).get("name")
-                    student.payment_method = user_details.get("data", {}).get("paymentForm", {}).get("name")
-                    student.faculty = user_details.get("data", {}).get("faculty", {}).get("name")
+                    student.level = (
+                        user_details.get("data", {}).get("level", {}).get("name")
+                    )
+                    student.payment_method = (
+                        user_details.get("data", {}).get("paymentForm", {}).get("name")
+                    )
+                    student.faculty = (
+                        user_details.get("data", {}).get("faculty", {}).get("name")
+                    )
                     student.gpa = user_details.get("data", {}).get("avg_gpa")
                     student.save()
 
                     token = Token.objects.get_or_create(user=student)
 
-                    return Response({
-                        "status": "success",
-                        "code": "200",
-                        "data": {
-                            **UserSerializer(student).data,
-                            "token": token[0].key
+                    return Response(
+                        {
+                            "status": "success",
+                            "code": "200",
+                            "data": {
+                                **UserSerializer(student).data,
+                                "token": token[0].key,
+                            },
                         }
-                    })
+                    )
                 else:
                     student = User.objects.create(
                         username=username,
@@ -226,24 +239,26 @@ def callback(request: HttpRequest):
                         image=user_details.get("picture_full"),
                         birth_date=user_details.get("birth_date"),
                         group=group,
-                        faculty=user_details.get("data", {}).get("faculty", {}).get("name"),
-                        payment_method=user_details.get("data", {}).get("paymentForm", {}).get("name"),
+                        faculty=user_details.get("data", {})
+                        .get("faculty", {})
+                        .get("name"),
+                        payment_method=user_details.get("data", {})
+                        .get("paymentForm", {})
+                        .get("name"),
                         level=user_details.get("data", {}).get("level", {}).get("name"),
-                        gpa=user_details.get("data", {}).get("avg_gpa")
+                        gpa=user_details.get("data", {}).get("avg_gpa"),
                     )
 
                     token = Token.objects.get_or_create(user=student)
 
-                    return Response({
-                        "status": "success",
-                        "code": "200",
-                        "data": {
-                            **UserSerializer(student).data,
-                            "token": token[0].key
+                    return Response(
+                        {
+                            "status": "success",
+                            "code": "200",
+                            "data": {
+                                **UserSerializer(student).data,
+                                "token": token[0].key,
+                            },
                         }
-                    })
-    return Response({
-        "status": "error",
-        "code": "200",
-        "data": "Xatolik"
-    })
+                    )
+    return Response({"status": "error", "code": "200", "data": "Xatolik"})
