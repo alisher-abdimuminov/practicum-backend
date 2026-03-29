@@ -51,6 +51,10 @@ class SubmitModelAdmin(ModelAdmin):
     )
     list_filter_submit = True
     search_fields = ["name"]
+    autocomplete_fields = (
+        "task",
+        "student",
+    )
 
 
 @admin.register(Task)
@@ -58,6 +62,7 @@ class TaskModelAdmin(ModelAdmin):
     list_display = (
         "name",
         "teacher",
+        "group",
         "created",
     )
     list_filter = (
@@ -66,6 +71,10 @@ class TaskModelAdmin(ModelAdmin):
     )
     list_filter_submit = True
     search_fields = ["name"]
+    autocomplete_fields = (
+        "teacher",
+        "group",
+    )
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "group":
@@ -105,6 +114,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
         "role",
     )
     list_filter_submit = True
+    autocomplete_fields = ("group",)
     model = User
     fieldsets = (
         (
@@ -166,3 +176,4 @@ class ScheduleModelAdmin(ModelAdmin):
     list_display = ["area", "weekday"]
     search_fields = ["name"]
     filter_horizontal = ("groups",)
+    autocomplete_fields = ("area",)
