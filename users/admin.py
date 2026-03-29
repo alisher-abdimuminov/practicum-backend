@@ -25,6 +25,7 @@ admin.site.unregister(Group)
 class GroupModelAdmin(ModelAdmin):
     list_display = ["name"]
     search_fields = ["name"]
+    filter_horizontal = ("permissions",)
 
 
 @admin.register(Area)
