@@ -43,6 +43,7 @@ class Group(models.Model):
         null=True,
         blank=True,
         related_name="group_teacher",
+        limit_choices_to={"role": "teacher"},
     )
 
     def __str__(self):
@@ -72,7 +73,7 @@ class User(AbstractUser):
     USERNAME_FIELD = "username"
 
     def __str__(self):
-        return self.username
+        return self.full_name if self.full_name else self.username
 
     class Meta:
         verbose_name = "Talaba"

@@ -145,6 +145,7 @@ def callback(request: HttpRequest):
                     teacher.phone = user_details.get("phone")
                     teacher.passport_number = user_details.get("passport_number")
                     teacher.role = "teacher"
+                    teacher.is_staff = True
                     teacher.save()
 
                     token = Token.objects.get_or_create(user=teacher)
@@ -168,6 +169,7 @@ def callback(request: HttpRequest):
                         phone=user_details.get("phone"),
                         passport_number=user_details.get("passport_number"),
                         role="teacher",
+                        is_staff=True,
                     )
 
                     token = Token.objects.get_or_create(user=teacher)
