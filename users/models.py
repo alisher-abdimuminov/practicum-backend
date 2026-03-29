@@ -36,7 +36,7 @@ WEEK_DAY = (
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, verbose_name="Guruh nomi")
     teacher = models.ForeignKey(
         "User",
         on_delete=models.SET_NULL,
@@ -44,6 +44,7 @@ class Group(models.Model):
         blank=True,
         related_name="group_teacher",
         limit_choices_to={"role": "teacher"},
+        verbose_name="Amaliyot o'qituvchisi",
     )
 
     def __str__(self):
@@ -53,18 +54,34 @@ class Group(models.Model):
 class User(AbstractUser):
     uuid = models.UUIDField(default=uuid4, editable=False)
 
-    full_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=100, null=True, blank=True)
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True)
-    passport_number = models.CharField(max_length=100, null=True, blank=True)
-    birth_date = models.CharField(max_length=100, null=True, blank=True)
-    level = models.CharField(max_length=100, null=True, blank=True)
-    faculty = models.CharField(max_length=100, null=True, blank=True)
+    full_name = models.CharField(max_length=100, verbose_name="To'liq ismi")
+    phone = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Telefon raqami"
+    )
+    group = models.ForeignKey(
+        Group, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Guruhi"
+    )
+    passport_number = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Passport raqami"
+    )
+    birth_date = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Tug'ilgan sanasi"
+    )
+    level = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Kursi"
+    )
+    faculty = models.CharField(
+        max_length=100, null=True, blank=True, verbose_name="Fakulteti"
+    )
     payment_method = models.CharField(max_length=100, null=True, blank=True)
-    gpa = models.FloatField(default=0)
+    gpa = models.FloatField(default=0, verbose_name="GPA si")
 
-    image = models.CharField(max_length=1000, null=True, blank=True)
-    role = models.CharField(max_length=100, choices=ROLE, default="student")
+    image = models.CharField(
+        max_length=1000, null=True, blank=True, verbose_name="Rasmi"
+    )
+    role = models.CharField(
+        max_length=100, choices=ROLE, default="student", verbose_name="Roli"
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
