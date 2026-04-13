@@ -13,5 +13,6 @@ dependencies = [
     "gunicorn>=23.0.0",
     "python-decouple>=3.8",
     "requests>=2.32.4",
+    "shapely>=2.1.2",
     "tf-keras>=2.19.0",
 ]

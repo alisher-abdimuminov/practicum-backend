@@ -11,6 +11,7 @@ from .models import (
     Area,
     User,
     Attendance,
+    AttendanceGroup,
     Submit,
     Task,
     Group as GGroup,
@@ -39,6 +40,13 @@ class AttendanceModelAdmin(ModelAdmin):
     list_display = ["student", "status", "created", "area"]
     search_fields = ["student"]
     list_filter = ["student", "status", "created"]
+
+
+@admin.register(AttendanceGroup)
+class AttendanceGroupModelAdmin(ModelAdmin):
+    list_display = ["student", "created"]
+    search_fields = ["student"]
+    list_filter = ["student", "created"]
 
 
 @admin.register(Submit)

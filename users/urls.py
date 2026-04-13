@@ -17,6 +17,11 @@ from .views.admin import (
     get_student_tasks,
     add_task,
 )
+from .views.student import (
+    check_location,
+    make_attendance,
+    get_attendance_group,
+)
 
 
 urlpatterns = [
@@ -33,4 +38,8 @@ urlpatterns = [
     path("teacher/submits/", get_teacher_submits),
     path("student/tasks/", get_student_tasks),
     path("student/submits/", get_student_submits),
+    # student
+    path("student/check_location/", check_location),
+    path("student/make_attendance/", make_attendance),
+    path("student/attendance_group/", get_attendance_group),
 ]

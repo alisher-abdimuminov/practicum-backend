@@ -76,7 +76,7 @@ AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Tashkent"
 
 USE_I18N = True
 
@@ -167,7 +167,7 @@ UNFOLD = {
                     {
                         "title": "Davomat",
                         "icon": "more_time",
-                        "link": reverse_lazy("admin:users_attendance_changelist"),
+                        "link": reverse_lazy("admin:users_attendancegroup_changelist"),
                     },
                     {
                         "title": "Guruhlar",

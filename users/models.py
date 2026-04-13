@@ -20,18 +20,8 @@ SUBMIT_STATUS = (
 
 ATTENDANCE_STATUS = (
     ("arrived", "Kelgan"),
-    ("late", "Kech qolgan"),
     ("failed", "Xatolik"),
-)
-
-WEEK_DAY = (
-    ("monday", "Dushanba"),
-    ("tuesday", "Seshanba"),
-    ("wednesday", "Chorshanba"),
-    ("thursday", "Payshanba"),
-    ("friday", "Juma"),
-    ("saturday", "Shanba"),
-    ("sunday", "Yakshanba"),
+    ("processing", "Jarayonda"),
 )
 
 
@@ -79,6 +69,8 @@ class User(AbstractUser):
     image = models.CharField(
         max_length=1000, null=True, blank=True, verbose_name="Rasmi"
     )
+    photo = models.ImageField(upload_to="students/", null=True, blank=True)
+
     role = models.CharField(
         max_length=100, choices=ROLE, default="student", verbose_name="Roli"
     )
@@ -159,6 +151,8 @@ class Attendance(models.Model):
     uuid = models.UUIDField(default=uuid4, editable=False)
     student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Talaba")
     area = models.ForeignKey(Area, on_delete=models.CASCADE, verbose_name="Joylashuv")
+    longitude = models.CharField(max_length=100)
+    latitude = models.CharField(max_length=100)
     status = models.CharField(
         max_length=100, choices=ATTENDANCE_STATUS, verbose_name="Holati"
     )
@@ -175,10 +169,53 @@ class Attendance(models.Model):
         verbose_name_plural = "Davomat"
 
 
-class Schedule(models.Model):
-    groups = models.ManyToManyField(Group, related_name="schedule_groups")
-    area = models.ForeignKey(Area, on_delete=models.CASCADE)
-    weekday = models.CharField(max_length=100, choices=WEEK_DAY)
+class AttendanceGroup(models.Model):
+    uuid = models.UUIDField(default=uuid4, editable=False)
+    student = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Talaba")
+
+    step_1 = models.ForeignKey(
+        Attendance,
+        related_name="step_1",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    step_2 = models.ForeignKey(
+        Attendance,
+        related_name="step_2",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    step_3 = models.ForeignKey(
+        Attendance,
+        related_name="step_3",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+
+    created = models.DateTimeField(auto_now_add=True, verbose_name="O'tgan vaqti")
+    updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.weekday
+        return str(self.uuid)
+
+
+class Schedule(models.Model):
+    WEEK_DAY = (
+        (0, "Dushanba"),
+        (1, "Seshanba"),
+        (2, "Chorshanba"),
+        (3, "Payshanba"),
+        (4, "Juma"),
+        (5, "Shanba"),
+        (6, "Yakshanba"),
+    )
+
+    groups = models.ManyToManyField(Group, related_name="schedule_groups")
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    weekday = models.IntegerField(choices=WEEK_DAY)
+
+    def __str__(self):
+        return self.get_weekday_display()
