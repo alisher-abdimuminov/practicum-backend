@@ -110,10 +110,14 @@ REST_FRAMEWORK = {
 # csrf
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CSRF_TRUSTED_ORIGINS = ["https://api.practicum.uzfi.uz", "http://localhost:8000"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://api.practicum.uzfi.uz",
+    "https://api.practicum.samdpi.uz",
+    "http://localhost:8000",
+]
 if not DEBUG:
-    SESSION_COOKIE_DOMAIN = ".practicum.uzfi.uz"
-    CSRF_COOKIE_DOMAIN = ".practicum.uzfi.uz"
+    SESSION_COOKIE_DOMAIN = ".practicum.samdpi.uz"
+    CSRF_COOKIE_DOMAIN = ".practicum.samdpi.uz"
     CSRF_COOKIE_SECURE = True
 
 
