@@ -141,6 +141,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
                     "payment_method",
                     "gpa",
                     "image",
+                    "photo",
                     "role",
                 )
             },
@@ -166,6 +167,7 @@ class UserModelAdmin(UserAdmin, ModelAdmin):
                     "payment_method",
                     "gpa",
                     "image",
+                    "photo",
                     "role",
                 )
             },
