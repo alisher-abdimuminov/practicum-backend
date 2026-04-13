@@ -10,11 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         Student = apps.get_model("users", "user")
 
-        students = (
-            Student.objects.filter(photo="", role="student")
-            .exclude(image__isnull=True)
-            .exclude(image="")
-        )
+        students = Student.objects.filter(role="student")
 
         total = students.count()
         self.stdout.write(self.style.SUCCESS(f"{total} ta rasm yuklanishi kerak."))
