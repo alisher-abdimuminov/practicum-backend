@@ -42,7 +42,7 @@ def get_attendance_group(request: HttpRequest):
 def get_schedule(request: HttpRequest):
     student: User = request.user
 
-    schedule = Schedule.objects.filter(group=student.group)
+    schedule = Schedule.objects.filter(groups=student.group)
 
     return Response(
         {
