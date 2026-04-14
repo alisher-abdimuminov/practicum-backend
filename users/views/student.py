@@ -48,7 +48,7 @@ def get_schedule(request: HttpRequest):
         {
             "status": "success",
             "code": "",
-            "data": {"schedules": ScheduleSerializer(schedule).data},
+            "data": {"schedule": ScheduleSerializer(schedule).data},
         }
     )
 
