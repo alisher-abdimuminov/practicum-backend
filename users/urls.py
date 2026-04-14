@@ -21,6 +21,7 @@ from .views.student import (
     check_location,
     make_attendance,
     get_attendance_group,
+    get_schedule,
 )
 
 
@@ -42,4 +43,5 @@ urlpatterns = [
     path("student/check_location/", check_location),
     path("student/make_attendance/", make_attendance),
     path("student/attendance_group/", get_attendance_group),
+    path("student/schedule/", get_schedule),
 ]

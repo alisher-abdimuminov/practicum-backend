@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from django.core.files.base import ContentFile
 
 from ..models import AttendanceGroup, User, Attendance, Schedule
-from ..serializers import AttendanceGroupSerializer, AreaSerializer
+from ..serializers import AttendanceGroupSerializer, AreaSerializer, ScheduleSerializer
 
 
 @decorators.api_view(http_method_names=["GET"])
@@ -40,24 +40,17 @@ def get_attendance_group(request: HttpRequest):
 
 @decorators.api_view(http_method_names=["GET"])
 def get_schedule(request: HttpRequest):
-    now = datetime.now()
     student: User = request.user
 
-    schedule = Schedule.objects.filter(group=student.group, weekday=now.weekday)
+    schedule = Schedule.objects.filter(group=student.group)
 
-    if schedule:
-        schedule = schedule.first()
-        return Response(
-            {
-                "status": "success",
-                "code": "",
-                "data": {
-                    "area": schedule.area.name,
-                },
-            }
-        )
-    else:
-        return Response({"status": "success", "code": "you_are_free", "data": None})
+    return Response(
+        {
+            "status": "success",
+            "code": "",
+            "data": {"schedules": ScheduleSerializer(schedule).data},
+        }
+    )
 
 
 @decorators.api_view(http_method_names=["POST"])
