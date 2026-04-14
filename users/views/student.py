@@ -42,13 +42,13 @@ def get_attendance_group(request: HttpRequest):
 def get_schedule(request: HttpRequest):
     student: User = request.user
 
-    schedule = Schedule.objects.filter(groups=student.group)
+    schedule = Schedule.objects.filter(groups=student.group).select_related("area")
 
     return Response(
         {
             "status": "success",
             "code": "",
-            "data": {"schedule": ScheduleSerializer(schedule).data},
+            "data": {"schedule": ScheduleSerializer(schedule, many=True).data},
         }
     )
 

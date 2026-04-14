@@ -148,13 +148,11 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ScheduleSerializer(serializers.ModelSerializer):
-    groups = GroupSerializer(Group, many=True)
-    area = AreaSerializer(Area)
+    area = AreaSerializer()
 
     class Meta:
         model = Schedule
         fields = (
-            "groups",
             "area",
             "weekday",
         )
