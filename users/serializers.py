@@ -59,14 +59,29 @@ class AttendanceGroupSerializer(serializers.ModelSerializer):
 
         is_available = start_h <= now.hour < end_h
 
+        is_past = now.hour >= end_h
+        has_arrived = attendance is not None and attendance.status == "arrived"
+
+        is_arrived = None
+        if has_arrived:
+            is_arrived = True
+        elif is_past:
+            is_arrived = False
+
         if attendance:
             return {
                 "created": attendance.created.strftime("%Y-%m-%d %H:%M:%S"),
                 "status": attendance.status,
                 "is_available": is_available and attendance.status != "arrived",
+                "is_arrived": is_arrived,
             }
         else:
-            return {"created": None, "status": None, "is_available": is_available}
+            return {
+                "created": None,
+                "status": None,
+                "is_available": is_available,
+                "is_arrived": is_arrived,
+            }
 
     def get_step_1(self, obj):
         return self.get_step_info(obj, 1, 8, 10)
