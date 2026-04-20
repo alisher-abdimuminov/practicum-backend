@@ -115,10 +115,8 @@ CSRF_TRUSTED_ORIGINS = [
     "https://api.practicum.samdpi.uz",
     "http://localhost:8000",
 ]
-if not DEBUG:
-    SESSION_COOKIE_DOMAIN = ".practicum.samdpi.uz"
-    CSRF_COOKIE_DOMAIN = ".practicum.samdpi.uz"
-    CSRF_COOKIE_SECURE = True
+
+CSRF_COOKIE_SECURE = True
 
 
 UNFOLD = {
@@ -126,8 +124,12 @@ UNFOLD = {
     "SITE_HEADER": "Practicum Control",
     "SITE_SUBHEADER": "Admin Panel",
     "SITE_ICON": {
-        "light": lambda request: "https://uzfi.uz/static/assets/images/uzfi.png",
-        "dark": lambda request: "https://uzfi.uz/static/assets/images/uzfi.png",
+        "light": lambda request: (
+            "https://samdpi.uz/static/assets2/images/logo/samDPI.png"
+        ),
+        "dark": lambda request: (
+            "https://samdpi.uz/static/assets2/images/logo/samDPI.png"
+        ),
     },
     "SHOW_HISTORY": True,
     "SIDEBAR": {

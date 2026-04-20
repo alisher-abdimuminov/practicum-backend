@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from unfold.contrib.filters.admin import (
+    RangeDateFilter,
     AutocompleteSelectFilter,
 )
 
@@ -44,9 +45,34 @@ class AttendanceModelAdmin(ModelAdmin):
 
 @admin.register(AttendanceGroup)
 class AttendanceGroupModelAdmin(ModelAdmin):
-    list_display = ["student", "created"]
+    list_display = [
+        "student",
+        "display_step_1",
+        "display_step_2",
+        "display_step_3",
+        "created",
+    ]
     search_fields = ["student"]
-    list_filter = ["student", "created"]
+    list_filter = (
+        "student",
+        "student__group",
+        ("created", RangeDateFilter),
+    )
+
+    # step 1
+    @admin.display(description="1-juftlik", boolean=True)
+    def display_step_1(self, obj: AttendanceGroup):
+        return obj.step_1 is not None and obj.step_1.status == "arrived"
+
+    # step 1
+    @admin.display(description="2-juftlik", boolean=True)
+    def display_step_2(self, obj: AttendanceGroup):
+        return obj.step_2 is not None and obj.step_2.status == "arrived"
+
+    # step 3
+    @admin.display(description="3-juftlik", boolean=True)
+    def display_step_3(self, obj: AttendanceGroup):
+        return obj.step_3 is not None and obj.step_3.status == "arrived"
 
 
 @admin.register(Submit)
